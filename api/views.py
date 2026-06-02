@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.serializers import Serializer
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, CategorySerializer
 from rest_framework.response import Response
-from core.models import Tasks
+from core.models import Tasks, Category
 
 
 @api_view(['GET'])
@@ -12,9 +12,17 @@ def getRoutes(request):
         'POST api/addtask/',
         'GET api/viewtasks/',
         'PATCH api/updatetask/<str:task_id>/',
-        'DELEtE api/deletetask/<str:task_id>/',
+        'DELETE api/deletetask/<str:task_id>/',
+        
+        'GET api/viewcategories/',
     ]
     return Response(routes)
+
+@api_view(['GET'])
+def viewCategories(request):
+    categories = Category.objects.all()
+    serializer = CategorySerializer(categories, many=True)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def addTask(request):
