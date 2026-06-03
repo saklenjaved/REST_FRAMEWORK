@@ -9,4 +9,7 @@ urlpatterns = [
     path('api/deletetask/<str:task_id>/', views.deleteTask),
     
     path('api/viewcategories/', views.viewCategories),
+    path('api/addcategory/', views.addCategory),
+    path('api/editcategory/<str:category_id>/', views.editCategory),
+    path('api/deletecategory/<str:category_id>/', views.deleteCategory),
 ]

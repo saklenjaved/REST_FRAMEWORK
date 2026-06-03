@@ -15,8 +15,35 @@ def getRoutes(request):
         'DELETE api/deletetask/<str:task_id>/',
         
         'GET api/viewcategories/',
+        'POST api/addcategory/',
+        'PATCH api/editcategory/<str:category_id>/',
+        'DELETE api/deletecategory/<str:category_id>/',
     ]
     return Response(routes)
+
+
+@api_view(['POST'])
+def addCategory(request):
+    serializer = CategorySerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors)
+
+@api_view(['PATCH'])
+def editCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    serializer = CategorySerializer(category, request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors)
+
+@api_view(['DELETE'])
+def deleteCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    category.delete()
+    return Response("Category Deleted")
 
 @api_view(['GET'])
 def viewCategories(request):
